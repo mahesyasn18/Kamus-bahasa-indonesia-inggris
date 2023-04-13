@@ -20,11 +20,13 @@ int main(int argc, char *argv[]) {
 	
     infotype indonesia, english;
     Node root = NULL;
+    root = load_data_from_file(root);
 
     do {
         printf("\n-- MENU --\n");
         printf("1. Tambah Data\n");
-		printf("2. Exit\n");
+        printf("2. Tampilkan Semua Data\n");
+		printf("3. Exit\n");
 		printf("Masukkan Pilihan Menu: ");
 		scanf("%d", &menu);
 		
@@ -35,16 +37,20 @@ int main(int argc, char *argv[]) {
             scanf("%s", &indonesia);
             printf("Masukkan Kata translate dalam Bahasa Inggris (pisahkan beberapa terjemahan dengan koma): ");
             scanf("%s", &english);
-            entryDatatoFile(indonesia, english);
+            entry_data_to_file(indonesia, english);
             printf("Berhasil Menambahkan Data ke Kamus\n");
             break;
-        
+        case 2:
+        	system("cls");
+            printf("\nData Kamus\n");
+            travesal_inorder(root);
+            break;
         default:
             printf("Invalid input\n");
             break;
     }
 
-	} while (menu != 2);
+	} while (menu != 3);
 
 	return 0;
 }

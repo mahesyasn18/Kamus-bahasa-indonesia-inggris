@@ -33,7 +33,15 @@ typedef struct BTNode{
 
 
 
-void entryDatatoFile(infotype idn, infotype eng);
+void entry_data_to_file(infotype idn, infotype eng);
+Node entry_data_to_tree(Node root, infotype idn, infotype eng);
+void entry_translate_to_linked_list(address *head, infotype eng);
+Node load_data_from_file(Node root);
+void travesal_inorder(Node root);
+void show_translate(address head);
+
+
+
 
 
 

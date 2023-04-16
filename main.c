@@ -20,9 +20,9 @@ int main(int argc, char *argv[]) {
 	
     infotype indonesia, english;
     Node root = NULL;
-    root = load_data_from_file(root);
 
     do {
+    	root = load_data_from_file(root);
         printf("\n-- MENU --\n");
         printf("1. Tambah Data\n");
         printf("2. Tampilkan Semua Data\n");

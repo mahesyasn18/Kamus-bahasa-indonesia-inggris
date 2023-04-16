@@ -29,10 +29,11 @@ typedef struct BTNode{
 	infotype idn;
 	Node left,right;
 	address translate;
+	int height;
 } BTnode;
 
 
-
+//crud data management
 void entry_data_to_file(infotype idn, infotype eng);
 Node entry_data_to_tree(Node root, infotype idn, infotype eng);
 void entry_translate_to_linked_list(address *head, infotype eng);
@@ -40,6 +41,15 @@ Node load_data_from_file(Node root);
 void travesal_inorder(Node root);
 void show_translate(address head);
 
+
+//avl management
+int get_height(Node node);
+Node create_node(infotype idn, infotype eng);
+int max(int leftNode, int rightNode);
+int get_balance(Node node);
+Node left_rotate(Node x);
+Node right_rotate(Node y);
+Node rotate_management(int balance, infotype idn, Node root);
 
 
 

@@ -10,21 +10,37 @@ program description: Program tugas besar mata kuliah Struktur Data dan Algoritma
 
 #include "kamus.h"
 
-//Avl Management
-int max(int leftNode, int rightNode) {
-    return (leftNode > rightNode) ? leftNode : rightNode;
+
+//crud data management
+void entry_data_to_file(infotype idn, infotype eng) {
+    FILE *fp;
+    fp = fopen("file.dat", "a+");
+	
+    if (fp == NULL) {
+        printf("Error opening file\n");
+        return;
+    }
+
+    fprintf(fp, "%s %s\n", idn, eng);
+    fclose(fp);
 }
 
-int get_height(Node node) {
-    if (node == NULL)
-        return 0;
-    return node->height;
-}
+Node load_data_from_file(Node root) {
+    FILE *fp;
+    fp = fopen("file.dat", "r");
 
-int get_balance(Node node) {
-    if (node == NULL)
-        return 0;
-    return get_height(node->left) - get_height(node->right);
+    if (fp == NULL) {
+        printf("Error opening file\n");
+        return NULL;
+    }
+
+    infotype idn, eng;
+    while (fscanf(fp, "%s %s", idn, eng) == 2) {
+        root = entry_data_to_tree(root, idn, eng);
+    }
+
+    fclose(fp);
+    return root;
 }
 
 Node create_node(infotype idn, infotype eng) {
@@ -42,6 +58,65 @@ Node create_node(infotype idn, infotype eng) {
     }
     return new_node;
 }
+
+Node entry_data_to_tree(Node root, infotype idn, infotype eng){
+    Node parent = NULL;
+    if(root==NULL){
+    	return create_node(idn, eng);
+	}
+	
+	if (strcmp(idn, root->idn) < 0) {//idn < root->idn)
+        root->left = entry_data_to_tree(root->left, idn, eng);
+    } else if (strcmp(idn, root->idn) > 0) {//idn > root->idn)
+        root->right = entry_data_to_tree(root->right, idn, eng);
+    } else {
+        return root;
+    }
+    
+    root->height = 1 + max(get_height(root->left), get_height(root->right));
+    int balance = get_balance(root);
+    
+    return rotate_management(balance, idn, root);
+}
+
+void entry_translate_to_linked_list(address *head, infotype eng) {
+    address temp = *head;
+
+    if (temp == NULL) {
+        temp = (address) malloc(sizeof(ElmtList));
+        strcpy(temp->eng, eng);
+        temp->next = NULL;
+        *head = temp;
+        return;
+    }
+	
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    temp->next = (address) malloc(sizeof(ElmtList));
+    strcpy(temp->next->eng, eng);
+    temp->next->next = NULL;
+}
+
+
+//Avl Management
+int max(int leftNode, int rightNode) {
+    return (leftNode > rightNode) ? leftNode : rightNode;
+}
+
+int get_height(Node node) {
+    if (node == NULL)
+        return 0;
+    return node->height;
+}
+
+int get_balance(Node node) {
+    if (node == NULL)
+        return 0;
+    return get_height(node->left) - get_height(node->right);
+}
+
 
 Node right_rotate(Node y) {
 	printf("right rotate\n");
@@ -100,85 +175,6 @@ Node rotate_management(int balance, infotype idn, Node root){
     return root;
 }
 
-
-
-
-//crud data management
-void entry_data_to_file(infotype idn, infotype eng) {
-    FILE *fp;
-    fp = fopen("file.dat", "a+");
-	
-    if (fp == NULL) {
-        printf("Error opening file\n");
-        return;
-    }
-
-    fprintf(fp, "%s %s\n", idn, eng);
-    fclose(fp);
-}
-
-Node entry_data_to_tree(Node root, infotype idn, infotype eng){
-    Node parent = NULL;
-    Node current = root;
-    if(root==NULL){
-    	return create_node(idn, eng);
-	}
-	
-	if (strcmp(idn, root->idn) < 0) {//idn < root->idn)
-        root->left = entry_data_to_tree(root->left, idn, eng);
-    } else if (strcmp(idn, root->idn) > 0) {//idn > root->idn)
-        root->right = entry_data_to_tree(root->right, idn, eng);
-    } else {
-        return root;
-    }
-    
-    root->height = 1 + max(get_height(root->left), get_height(root->right));
-    int balance = get_balance(root);
-    
-    return rotate_management(balance, idn, root);
-    
-    return root;
-}
-
-void entry_translate_to_linked_list(address *head, infotype eng) {
-    address temp = *head;
-
-    if (temp == NULL) {
-        temp = (address) malloc(sizeof(ElmtList));
-        strcpy(temp->eng, eng);
-        temp->next = NULL;
-        *head = temp;
-        return;
-    }
-	
-    while (temp->next != NULL) {
-        temp = temp->next;
-    }
-
-    temp->next = (address) malloc(sizeof(ElmtList));
-    strcpy(temp->next->eng, eng);
-    temp->next->next = NULL;
-}
-
-Node load_data_from_file(Node root) {
-    FILE *fp;
-    fp = fopen("file.dat", "r");
-
-    if (fp == NULL) {
-        printf("Error opening file\n");
-        return NULL;
-    }
-
-    infotype idn, eng;
-    while (fscanf(fp, "%s %s", idn, eng) == 2) {
-        root = entry_data_to_tree(root, idn, eng);
-    }
-
-    fclose(fp);
-    return root;
-}
-
-
 void show_translate(address head) {
     address temp = head;
 
@@ -190,8 +186,6 @@ void show_translate(address head) {
     printf("\n");
 }
 
-
-
 void travesal_inorder(Node root) {
     if (root != NULL) {
         travesal_inorder(root->left);
@@ -200,6 +194,7 @@ void travesal_inorder(Node root) {
         travesal_inorder(root->right);
     }
 }
+
 
 
 

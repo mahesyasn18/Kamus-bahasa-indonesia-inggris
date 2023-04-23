@@ -1,4 +1,4 @@
-# Kamus-bahasa-indonesia-english-
+# Kamus-bahasa-indonesia-english
 
 ## 🤨 Aplikasi Kamus Bahasa Indonesia-Inggris?
 The Indonesian-English dictionary application is a translator application from Indonesian to English where 1 Indonesian word can have various meanings in English. This Indonesian-English dictionary program implements the Binary Search Tree (BST) concept, which is an ordered binary tree used to build a Lexicographic Binary Tree (LBT) in Indonesian-English dictionaries. In addition, this program also implements the AVL tree algorithm so that the tree formed is balanced, so that it can speed up the process of searching for words that will display their meaning.

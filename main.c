@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
 	int menu = 0;
 	
     infotype indonesia, english;
-    Node root = NULL;
+    Node root = NULL, temp;
 
     do {
     	root = load_data_from_file(root);
@@ -32,9 +32,20 @@ int main(int argc, char *argv[]) {
 		
 		switch (menu) {
         case 1:
-        system("cls");
-            printf("Masukkan kata dalam Bahasa Indonesia: ");
-            scanf("%s", &indonesia);
+
+           
+            do{
+            	system("cls");
+            	printf("Masukkan kata dalam Bahasa Indonesia: ");
+            	scanf("%s", &indonesia);
+            	temp = Search(root, indonesia);
+            	if(temp != NULL){
+					printf("Kata ini sudah ada dalam kamus.\n");
+					printf("Silakan masukkan kata yang lain.\n");
+					system("pause");
+				}
+			}while(temp!=NULL);
+            
             printf("Masukkan Kata translate dalam Bahasa Inggris (pisahkan beberapa terjemahan dengan koma): ");
             scanf("%s", &english);
             entry_data_to_file(indonesia, english);

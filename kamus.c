@@ -20,7 +20,8 @@ void entry_data_to_file(infotype idn, infotype eng) {
         printf("Error opening file\n");
         return;
     }
-
+	
+	
     fprintf(fp, "%s %s\n", idn, eng);
     fclose(fp);
 }
@@ -60,12 +61,11 @@ Node create_node(infotype idn, infotype eng) {
 }
 
 Node entry_data_to_tree(Node root, infotype idn, infotype eng){
-    Node parent = NULL;
-    if(root==NULL){
-    	return create_node(idn, eng);
-	}
-	
-	if (strcmp(idn, root->idn) < 0) {//idn < root->idn)
+    if(root == NULL) {
+        return create_node(idn, eng);
+    }
+    
+    if (strcmp(idn, root->idn) < 0) {//idn < root->idn)
         root->left = entry_data_to_tree(root->left, idn, eng);
     } else if (strcmp(idn, root->idn) > 0) {//idn > root->idn)
         root->right = entry_data_to_tree(root->right, idn, eng);
@@ -78,6 +78,22 @@ Node entry_data_to_tree(Node root, infotype idn, infotype eng){
     
     return rotate_management(balance, idn, root);
 }
+
+Node Search(Node root, infotype idn){
+	if(root == NULL){
+		return NULL;
+		if(strcmp(idn, root->idn) < 0)
+			return Search(root->left, idn);
+		else if(strcmp(idn, root->idn) > 0)
+			return Search(root->right, idn);
+		else{
+			return root;
+		}
+		
+	}
+
+}
+
 
 void entry_translate_to_linked_list(address *head, infotype eng) {
     address temp = *head;
@@ -119,7 +135,7 @@ int get_balance(Node node) {
 
 
 Node right_rotate(Node y) {
-	printf("right rotate\n");
+//	printf("right rotate\n");
     Node temp1 = y->left;
     Node temp2 = temp1->right;
     temp1->right = y;

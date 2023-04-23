@@ -41,6 +41,8 @@ Node load_data_from_file(Node root);
 void travesal_inorder(Node root);
 void show_translate(address head);
 
+Node Search(Node root, infotype idn);
+
 
 //avl management
 int get_height(Node node);

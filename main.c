@@ -20,20 +20,20 @@ int main(int argc, char *argv[]) {
 	
     infotype indonesia, english;
     Node root = NULL, temp;
-
+    address tempEn;
     do {
     	root = load_data_from_file(root);
         printf("\n-- MENU --\n");
         printf("1. Tambah Data\n");
         printf("2. Tampilkan Semua Data\n");
-		printf("3. Exit\n");
+		printf("3. Delete Kata\n");
+		printf("4. Edit Kata\n");
+		printf("0. Exit\n");
 		printf("Masukkan Pilihan Menu: ");
 		scanf("%d", &menu);
 		
 		switch (menu) {
         case 1:
-
-           
             do{
             	system("cls");
             	printf("Masukkan kata dalam Bahasa Indonesia: ");
@@ -56,12 +56,52 @@ int main(int argc, char *argv[]) {
             printf("\nData Kamus\n");
             travesal_inorder(root);
             break;
+		case 3:
+			//cari dulu kata yang pengen di delete, make modul search
+			system("cls");
+			printf("\nData Kamus\n");
+            travesal_inorder(root);
+        	printf("Masukkan kata dalam Bahasa Indonesia yang akan dihapus: ");
+        	scanf("%s", &indonesia);
+        	temp = Search(root, indonesia);
+        	if(temp == NULL){
+				printf("Kata ini tidak terdaftar dalam kamus.\n");
+				printf("Silakan masukkan kata yang lain.\n");
+				system("pause");
+				break;
+			}else{
+				//kalo katanya ada, jalanin modul Delete dengan temp sebagai target kata yang di delete
+				Delete(&root, temp);
+				system("cls");
+			}
+            break;
+		case 4:
+			system("cls");
+			printf("\nData Kamus\n");
+            travesal_inorder(root);
+        	printf("Masukkan kata dalam Bahasa Indonesia yang akan di edit: ");
+        	scanf("%s", &indonesia);
+        	temp = Search(root, indonesia);
+        	if(temp == NULL){
+				printf("Kata ini tidak terdaftar dalam kamus.\n");
+				printf("Silakan masukkan kata yang lain.\n");
+				system("pause");
+				break;
+			}else{
+				system("cls");
+				edit_kata(&root, temp);
+				system("cls");
+			}
+			break;
+		case 0:
+			printf("\nprogram selesai!");
+			break;
         default:
             printf("Invalid input\n");
             break;
     }
 
-	} while (menu != 3);
+	} while (menu != 0);
 
 	return 0;
 }

@@ -42,6 +42,8 @@ void travesal_inorder(Node root);
 void show_translate(address head);
 
 Node Search(Node root, infotype idn);
+void Delete(Node *root, Node target);
+void edit_kata(Node *root, Node tempId);
 
 
 //avl management

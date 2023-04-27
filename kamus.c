@@ -82,14 +82,13 @@ Node entry_data_to_tree(Node root, infotype idn, infotype eng){
 Node Search(Node root, infotype idn){
 	if(root == NULL){
 		return NULL;
-		if(strcmp(idn, root->idn) < 0)
-			return Search(root->left, idn);
-		else if(strcmp(idn, root->idn) > 0)
-			return Search(root->right, idn);
-		else{
-			return root;
-		}
-		
+	}
+	if(strcmp(idn, root->idn) < 0){
+		return Search(root->left, idn);
+	}else if(strcmp(idn, root->idn) > 0){
+		return Search(root->right, idn);
+	}else{
+		return root;
 	}
 
 }
@@ -114,6 +113,53 @@ void entry_translate_to_linked_list(address *head, infotype eng) {
     strcpy(temp->next->eng, eng);
     temp->next->next = NULL;
 }
+
+
+
+void Delete(Node *root, Node target){
+	//target adalah node kata yang akan di delete
+	//traverse semua elemen tree, write kedalam file
+	//jika elemen sama dengan target maka jangan write kedalam file
+	FILE *fp;
+	fp = fopen("file.dat", "w");
+	if(fp==NULL){
+		printf("Error opening file\n");
+		return;
+	}
+	Node temp;
+	Node stack[10] = {*root};
+	int top=0;
+	address tempEng;
+	//algoritma traversing preorder binary tree tanpa rekursif (pake stack)
+	while (top!=-1){
+		temp = stack[top--];
+		if (temp != target){
+			char strId[25] = "", strEn[100] = ""; //strId untuk menampung idn, strEn untuk seluruh translate
+			strcpy(strId,temp->idn); //copy idn dari elemen tree
+			tempEng = temp->translate;
+			//loop untuk translate
+			while (tempEng != NULL){ //cek elemen translate saat ini
+				strcat(strEn,tempEng->eng); //di concatenate dengan elemen translate sebelumnya
+				strcat(strEn,",");//di concat juga dengan koma ',' agar format sama dengan cara insert
+				tempEng = tempEng->next;
+			}
+			fprintf(fp, "%s %s\n", strId, strEn); //write ke file
+		}
+		
+		if (temp->left != NULL){
+			stack[++top] = temp->left;
+		}
+		if (temp->right != NULL){
+			stack[++top] = temp->right;
+		}
+	}
+	fclose(fp);
+	free(*root);
+	*root = NULL;
+	load_data_from_file(*root);
+}
+
+
 
 
 //Avl Management
@@ -202,6 +248,7 @@ void show_translate(address head) {
     printf("\n");
 }
 
+
 void travesal_inorder(Node root) {
     if (root != NULL) {
         travesal_inorder(root->left);
@@ -211,7 +258,62 @@ void travesal_inorder(Node root) {
     }
 }
 
-
+void edit_kata(Node *root, Node tempId){
+	address tempEn, temp;
+	infotype english;
+	int flag = -1;
+	printf("\n%s ", tempId->idn);
+	show_translate(tempId->translate);
+	printf("Masukkan kata terjemahan yang akan di delete: ");
+	scanf("%s", &english);
+	if (strcmp(tempId->translate->eng, english) == 0){
+		//jika translate nya ada di head, maka pindahkan head nya ke next
+		temp = tempId->translate;
+		if (tempId->translate->next != NULL){
+			tempId->translate = tempId->translate->next;
+		}else{
+			tempId->translate = NULL;
+		}
+		free(temp);
+	//jika next translate tidak null, loop untuk mencari kata yang mau di delete
+	}else if (tempId->translate->next != NULL){
+		//loop dengan harus memegang item sebelum target untuk disambungkan ke next dari target delete
+		tempEn = tempId->translate;
+		while(tempEn != NULL){
+			if (strcmp(tempEn->next->eng, english)==0){
+				temp = tempEn->next;
+				if (temp->next != NULL){
+					tempEn->next = temp->next;
+					free(temp);
+					flag = 0;
+				}else{
+					tempEn->next = NULL;
+					free(temp);
+					flag = 0;
+				}
+				break;
+			}
+			tempEn = tempEn->next;
+		}
+		if (flag != 0){
+			printf("\nKata yang dicari tidak ditemukan!");
+			return;
+		}
+	}else{
+		printf("\nKata yang dicari tidak ditemukan!");
+		return;
+	}
+	printf("Masukkan Kata translate dalam Bahasa Inggris (pisahkan beberapa terjemahan dengan koma): ");
+    scanf("%s", &english);
+    entry_translate_to_linked_list(&(tempId->translate), strtok(english, ","));
+    char *token = strtok(NULL, ",");
+    while (token != NULL) {
+        entry_translate_to_linked_list(&(tempId->translate), token);
+        token = strtok(NULL, ",");
+    }
+    printf("Berhasil Menambahkan Data ke Kamus\n");
+	Delete(&*root, NULL);
+}
 
 
 

@@ -18,16 +18,15 @@ void entry_data_to_file(infotype idn, infotype eng) {
 	
     if (fp == NULL) {
         printf("Error opening file\n");
-        return;
-    }
-	
-	
-    fprintf(fp, "%s %s\n", idn, eng);
-    fclose(fp);
+    }else{
+    	fprintf(fp, "%s %s\n", idn, eng);
+    	fclose(fp);
+	}
 }
 
 Node load_data_from_file(Node root) {
     FILE *fp;
+    infotype idn, eng;
     fp = fopen("file.dat", "r");
 
     if (fp == NULL) {
@@ -35,7 +34,6 @@ Node load_data_from_file(Node root) {
         return NULL;
     }
 
-    infotype idn, eng;
     while (fscanf(fp, "%s %s", idn, eng) == 2) {
         root = entry_data_to_tree(root, idn, eng);
     }
@@ -102,61 +100,17 @@ void entry_translate_to_linked_list(address *head, infotype eng) {
         strcpy(temp->eng, eng);
         temp->next = NULL;
         *head = temp;
-        return;
-    }
+        
+    }else{
+    	while (temp->next != NULL) {
+        	temp = temp->next;
+    	}
+		 temp->next = (address) malloc(sizeof(ElmtList));
+	    strcpy(temp->next->eng, eng);
+	    temp->next->next = NULL;  
+	}
 	
-    while (temp->next != NULL) {
-        temp = temp->next;
-    }
-
-    temp->next = (address) malloc(sizeof(ElmtList));
-    strcpy(temp->next->eng, eng);
-    temp->next->next = NULL;
-}
-
-
-
-void Delete(Node *root, Node target){
-	//target adalah node kata yang akan di delete
-	//traverse semua elemen tree, write kedalam file
-	//jika elemen sama dengan target maka jangan write kedalam file
-	FILE *fp;
-	fp = fopen("file.dat", "w");
-	if(fp==NULL){
-		printf("Error opening file\n");
-		return;
-	}
-	Node temp;
-	Node stack[10] = {*root};
-	int top=0;
-	address tempEng;
-	//algoritma traversing preorder binary tree tanpa rekursif (pake stack)
-	while (top!=-1){
-		temp = stack[top--];
-		if (temp != target){
-			char strId[25] = "", strEn[100] = ""; //strId untuk menampung idn, strEn untuk seluruh translate
-			strcpy(strId,temp->idn); //copy idn dari elemen tree
-			tempEng = temp->translate;
-			//loop untuk translate
-			while (tempEng != NULL){ //cek elemen translate saat ini
-				strcat(strEn,tempEng->eng); //di concatenate dengan elemen translate sebelumnya
-				strcat(strEn,",");//di concat juga dengan koma ',' agar format sama dengan cara insert
-				tempEng = tempEng->next;
-			}
-			fprintf(fp, "%s %s\n", strId, strEn); //write ke file
-		}
-		
-		if (temp->left != NULL){
-			stack[++top] = temp->left;
-		}
-		if (temp->right != NULL){
-			stack[++top] = temp->right;
-		}
-	}
-	fclose(fp);
-	free(*root);
-	*root = NULL;
-	load_data_from_file(*root);
+    
 }
 
 
@@ -198,7 +152,7 @@ Node right_rotate(Node y) {
 }
 
 Node left_rotate(Node x) {
-	printf("left rotate\n");
+//	printf("left rotate\n");
     Node temp1 = x->right;
     Node temp2 = temp1->left;
     temp1->left = x;
@@ -303,7 +257,7 @@ void edit_kata(Node *root, Node tempId){
 		printf("\nKata yang dicari tidak ditemukan!");
 		return;
 	}
-	printf("Masukkan Kata translate dalam Bahasa Inggris (pisahkan beberapa terjemahan dengan koma): ");
+	printf("Masukkan Kata translate (pisahkan beberapa terjemahan dengan koma): ");
     scanf("%s", &english);
     entry_translate_to_linked_list(&(tempId->translate), strtok(english, ","));
     char *token = strtok(NULL, ",");
@@ -313,6 +267,66 @@ void edit_kata(Node *root, Node tempId){
     }
     printf("Berhasil Menambahkan Data ke Kamus\n");
 	Delete(&*root, NULL);
+}
+
+void Delete(Node *root, Node target){
+	//target adalah node kata yang akan di delete
+	//traverse semua elemen tree, write kedalam file
+	//jika elemen sama dengan target maka jangan write kedalam file
+	FILE *fp;
+	fp = fopen("file.dat", "w");
+	if(fp==NULL){
+		printf("Error opening file\n");
+		return;
+	}
+	Node temp;
+	Node stack[10] = {*root};
+	int top=0;
+	address tempEng;
+	//algoritma traversing preorder binary tree tanpa rekursif (pake stack)
+	while (top!=-1){
+		temp = stack[top--];
+		if (temp != target){
+			char strId[25] = "", strEn[100] = ""; //strId untuk menampung idn, strEn untuk seluruh translate
+			strcpy(strId,temp->idn); //copy idn dari elemen tree
+			tempEng = temp->translate;
+			//loop untuk translate
+			while (tempEng != NULL){ //cek elemen translate saat ini
+				strcat(strEn,tempEng->eng); //di concatenate dengan elemen translate sebelumnya
+				strcat(strEn,",");//di concat juga dengan koma ',' agar format sama dengan cara insert
+				tempEng = tempEng->next;
+			}
+			fprintf(fp, "%s %s\n", strId, strEn); //write ke file
+		}
+		
+		if (temp->left != NULL){
+			stack[++top] = temp->left;
+		}
+		if (temp->right != NULL){
+			stack[++top] = temp->right;
+		}
+	}
+	fclose(fp);
+	free(*root);
+	*root = NULL;
+	load_data_from_file(*root);
+}
+
+
+void translate_search(Node root, infotype idn){
+	Node find;
+	if(root == NULL){
+		printf("Kamus Kosong. Tidak ada data yang tersedia!\n");
+	}else{
+		find = Search(root,idn);
+		if(find != NULL){
+			printf("Terjemahan: ");
+			show_translate(find->translate);
+		}else{
+			printf("Kata tidak ditemukan.\n");
+		}
+	}
+	
 }
 
 

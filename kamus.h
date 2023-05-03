@@ -41,9 +41,7 @@ Node load_data_from_file(Node root);
 void travesal_inorder(Node root);
 void show_translate(address head);
 
-Node Search(Node root, infotype idn);
-void Delete(Node *root, Node target);
-void edit_kata(Node *root, Node tempId);
+
 
 
 //avl management
@@ -54,6 +52,12 @@ int get_balance(Node node);
 Node left_rotate(Node x);
 Node right_rotate(Node y);
 Node rotate_management(int balance, infotype idn, Node root);
+
+Node Search(Node root, infotype idn);
+void Delete(Node *root, Node target);
+void edit_kata(Node *root, Node tempId);
+
+void translate_search(Node root, infotype idn);
 
 
 

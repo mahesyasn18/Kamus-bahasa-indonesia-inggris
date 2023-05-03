@@ -23,11 +23,12 @@ int main(int argc, char *argv[]) {
     address tempEn;
     do {
     	root = load_data_from_file(root);
-        printf("\n-- MENU --\n");
+        printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
         printf("1. Tambah Data\n");
         printf("2. Tampilkan Semua Data\n");
-		printf("3. Delete Kata\n");
-		printf("4. Edit Kata\n");
+        printf("3. Translate Kata\n");
+		printf("4. Delete Kata\n");
+		printf("5. Edit Kata\n");
 		printf("0. Exit\n");
 		printf("Masukkan Pilihan Menu: ");
 		scanf("%d", &menu);
@@ -36,6 +37,7 @@ int main(int argc, char *argv[]) {
         case 1:
             do{
             	system("cls");
+            	printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
             	printf("Masukkan kata dalam Bahasa Indonesia: ");
             	scanf("%s", &indonesia);
             	temp = Search(root, indonesia);
@@ -46,23 +48,42 @@ int main(int argc, char *argv[]) {
 				}
 			}while(temp!=NULL);
             
-            printf("Masukkan Kata translate dalam Bahasa Inggris (pisahkan beberapa terjemahan dengan koma): ");
+            printf("Masukkan Kata translate(pisahkan beberapa terjemahan dengan koma): ");
             scanf("%s", &english);
             entry_data_to_file(indonesia, english);
+            printf("\n==============================\n");
             printf("Berhasil Menambahkan Data ke Kamus\n");
+            sleep(1);
+            system("cls");
             break;
         case 2:
         	system("cls");
-            printf("\nData Kamus\n");
+        	printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
+            printf("Data Kamus\n");
             travesal_inorder(root);
+			printf("\n");
+			system("pause");
+			system("cls");
             break;
-		case 3:
+        case 3:
+        	system("cls");
+        	printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
+        	printf("Masukkan kata yang ingin dicari: ");
+        	scanf("%s", &indonesia);
+        	translate_search(root,indonesia);
+        	system("pause");
+        	system("cls");
+        	break;
+		case 4:
 			//cari dulu kata yang pengen di delete, make modul search
 			system("cls");
+			printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
 			printf("\nData Kamus\n");
             travesal_inorder(root);
+            printf("\n==============================\n");
         	printf("Masukkan kata dalam Bahasa Indonesia yang akan dihapus: ");
         	scanf("%s", &indonesia);
+        	printf("\n==============================\n");
         	temp = Search(root, indonesia);
         	if(temp == NULL){
 				printf("Kata ini tidak terdaftar dalam kamus.\n");
@@ -72,15 +93,20 @@ int main(int argc, char *argv[]) {
 			}else{
 				//kalo katanya ada, jalanin modul Delete dengan temp sebagai target kata yang di delete
 				Delete(&root, temp);
-				system("cls");
+				
 			}
-            break;
-		case 4:
+			system("pause");
 			system("cls");
+            break;
+		case 5:
+			system("cls");
+			printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
 			printf("\nData Kamus\n");
             travesal_inorder(root);
-        	printf("Masukkan kata dalam Bahasa Indonesia yang akan di edit: ");
+            printf("\n==============================\n");
+        	printf("Masukkan kata dalam Bahasa Indonesia: ");
         	scanf("%s", &indonesia);
+        	printf("\n==============================\n");
         	temp = Search(root, indonesia);
         	if(temp == NULL){
 				printf("Kata ini tidak terdaftar dalam kamus.\n");
@@ -90,8 +116,10 @@ int main(int argc, char *argv[]) {
 			}else{
 				system("cls");
 				edit_kata(&root, temp);
-				system("cls");
+				
 			}
+			system("pause");
+			system("cls");
 			break;
 		case 0:
 			printf("\nprogram selesai!");

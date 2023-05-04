@@ -212,6 +212,7 @@ void travesal_inorder(Node root) {
     }
 }
 
+
 void edit_kata(Node *root, Node tempId){
 	address tempEn, temp;
 	infotype english;
@@ -234,27 +235,29 @@ void edit_kata(Node *root, Node tempId){
 		//loop dengan harus memegang item sebelum target untuk disambungkan ke next dari target delete
 		tempEn = tempId->translate;
 		while(tempEn != NULL){
-			if (strcmp(tempEn->next->eng, english)==0){
-				temp = tempEn->next;
-				if (temp->next != NULL){
-					tempEn->next = temp->next;
-					free(temp);
+			if (tempEn->next != NULL){
+				if(strcmp(tempEn->next->eng, english) == 0){
+					temp = tempEn->next;
+					if (temp->next != NULL){
+						tempEn->next = temp->next;
+						temp->next = NULL;
+						free(temp);
+					}else{
+						tempEn->next = NULL;
+						free(temp);
+					}
 					flag = 0;
-				}else{
-					tempEn->next = NULL;
-					free(temp);
-					flag = 0;
+					break;
 				}
-				break;
 			}
 			tempEn = tempEn->next;
 		}
 		if (flag != 0){
-			printf("\nKata yang dicari tidak ditemukan!");
+			printf("\nKata yang dicari tidak ditemukan!\n");
 			return;
 		}
 	}else{
-		printf("\nKata yang dicari tidak ditemukan!");
+		printf("\nKata yang dicari tidak ditemukan!\n");
 		return;
 	}
 	printf("Masukkan Kata translate (pisahkan beberapa terjemahan dengan koma): ");

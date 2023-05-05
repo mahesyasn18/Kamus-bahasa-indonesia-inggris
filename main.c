@@ -19,16 +19,21 @@ int main(int argc, char *argv[]) {
 	int menu = 0;
 	
     infotype indonesia, english;
-    Node root = NULL, temp;
+    Node root = NULL, temp, rootBalance = NULL;
     address tempEn;
     do {
-    	root = load_data_from_file(root);
+    	root = load_data_from_file(root, false);
+    	if(rootBalance!=NULL){
+        	root = rootBalance;
+		}
         printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
-        printf("1. Tambah Data\n");
+        printf("Lakukan Balancing Terlebih dahulu untuk pertama kali load data dan untuk setiap terdapat perubahan data\n");
+		printf("1. Tambah Data\n");
         printf("2. Tampilkan Semua Data\n");
         printf("3. Translate Kata\n");
 		printf("4. Delete Kata\n");
 		printf("5. Edit Kata\n");
+		printf("6. Balancing\n");
 		printf("0. Exit\n");
 		printf("Masukkan Pilihan Menu: ");
 		scanf("%d", &menu);
@@ -70,7 +75,7 @@ int main(int argc, char *argv[]) {
         	printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
         	printf("Masukkan kata yang ingin dicari: ");
         	scanf("%s", &indonesia);
-        	translate_search(root,indonesia);
+			translate_search(root,indonesia);
         	system("pause");
         	system("cls");
         	break;
@@ -121,6 +126,16 @@ int main(int argc, char *argv[]) {
 			system("pause");
 			system("cls");
 			break;
+		case 6:
+			system("cls");
+			printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
+			printf("\nData Kamus Sebelum Balancing\n");
+			travesal_inorder(root);
+			printf("\nData Kamus Sesudah Balancing\n");
+			rootBalance = load_data_from_file(rootBalance, true);
+			travesal_inorder(rootBalance);
+			system("pause");
+			system("cls");
 		case 0:
 			printf("\nprogram selesai!");
 			break;

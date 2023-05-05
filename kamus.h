@@ -12,6 +12,7 @@ program description: Program tugas besar mata kuliah Struktur Data dan Algoritma
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define True 1
 #define False 0
@@ -35,9 +36,9 @@ typedef struct BTNode{
 
 //crud data management
 void entry_data_to_file(infotype idn, infotype eng);
-Node entry_data_to_tree(Node root, infotype idn, infotype eng);
+Node entry_data_to_tree(Node root, infotype idn, infotype eng, bool isAvl);
 void entry_translate_to_linked_list(address *head, infotype eng);
-Node load_data_from_file(Node root);
+Node load_data_from_file(Node root, bool isAvl);
 void travesal_inorder(Node root);
 void show_translate(address head);
 

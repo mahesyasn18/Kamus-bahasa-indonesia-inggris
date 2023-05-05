@@ -24,7 +24,7 @@ void entry_data_to_file(infotype idn, infotype eng) {
 	}
 }
 
-Node load_data_from_file(Node root) {
+Node load_data_from_file(Node root, bool isAvl) {
     FILE *fp;
     infotype idn, eng;
     fp = fopen("file.dat", "r");
@@ -35,7 +35,7 @@ Node load_data_from_file(Node root) {
     }
 
     while (fscanf(fp, "%s %s", idn, eng) == 2) {
-        root = entry_data_to_tree(root, idn, eng);
+        root = entry_data_to_tree(root, idn, eng, isAvl);
     }
 
     fclose(fp);
@@ -58,23 +58,27 @@ Node create_node(infotype idn, infotype eng) {
     return new_node;
 }
 
-Node entry_data_to_tree(Node root, infotype idn, infotype eng){
+Node entry_data_to_tree(Node root, infotype idn, infotype eng, bool isAvl){
     if(root == NULL) {
         return create_node(idn, eng);
     }
     
     if (strcmp(idn, root->idn) < 0) {//idn < root->idn)
-        root->left = entry_data_to_tree(root->left, idn, eng);
+        root->left = entry_data_to_tree(root->left, idn, eng, isAvl);
     } else if (strcmp(idn, root->idn) > 0) {//idn > root->idn)
-        root->right = entry_data_to_tree(root->right, idn, eng);
+        root->right = entry_data_to_tree(root->right, idn, eng, isAvl);
     } else {
         return root;
     }
     
     root->height = 1 + max(get_height(root->left), get_height(root->right));
     int balance = get_balance(root);
-    
-    return rotate_management(balance, idn, root);
+    if(isAvl){
+    	return rotate_management(balance, idn, root);
+	}
+	else{
+		return root;
+	}
 }
 
 Node Search(Node root, infotype idn){
@@ -312,7 +316,7 @@ void Delete(Node *root, Node target){
 	fclose(fp);
 	free(*root);
 	*root = NULL;
-	load_data_from_file(*root);
+	load_data_from_file(*root, true);
 }
 
 

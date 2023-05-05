@@ -98,6 +98,7 @@ int main(int argc, char *argv[]) {
 			}else{
 				//kalo katanya ada, jalanin modul Delete dengan temp sebagai target kata yang di delete
 				Delete(&root, temp);
+				rootBalance = NULL;
 				
 			}
 			system("pause");

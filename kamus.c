@@ -16,13 +16,8 @@ void entry_data_to_file(infotype idn, infotype eng) {
     FILE *fp;
     fp = fopen("file.dat", "a+");
     int i;
-    for (i= 0; i<=strlen(idn); i++) {
-        idn[i] = tolower(idn[i]);
-    }
-    
-    for (i= 0; i<=strlen(eng); i++) {
-            eng[i] = tolower(eng[i]);
-    }
+   	change_to_lower(idn);
+    change_to_lower(eng);
 	
     if (fp == NULL) {
         printf("Error opening file\n");
@@ -242,45 +237,6 @@ void travesal_inorder(Node root) {
     }
 }
 
-
-
-//void print_tree(Node root, int level, int max_height) {
-//	int i;
-//if (root == NULL) {
-//return;
-//}
-//// Print the right subtree
-//print_tree(root->right, level + 1, max_height);
-//
-//// Print the current node
-//// Indent the node based on the level
-//for ( i= 0; i < level - 1; i++) {
-//    printf("|       ");
-//}
-//
-//
-//if (level > 0) {
-//    printf("|-------");
-//}
-//
-//
-//if (root->height == max_height) {
-//    printf("+");
-//    printf("--- %s  \n", root->idn);
-////    printf("Hasil Translatenya: ");
-////    show_translate(root->translate);
-//} else {
-//    printf("-");
-//    printf("--- %s \n", root->idn);
-////    printf("Hasil Translatenya: ");
-////    show_translate(root->translate);
-//}
-//
-//// Print the left subtree
-//print_tree(root->left, level + 1, max_height);
-//}
-
-
 void print_tree(Node root, int level, int max_height) {
     int i;
     if (root == NULL) {
@@ -332,6 +288,7 @@ void edit_kata(Node *root, Node tempId){
 	show_translate(tempId->translate);
 	printf("Masukkan kata terjemahan yang akan di delete: ");
 	scanf("%s", &english);
+	change_to_lower(english);
 	if (strcmp(tempId->translate->eng, english) == 0){
 		//jika translate nya ada di head, maka pindahkan head nya ke next
 		temp = tempId->translate;
@@ -373,6 +330,7 @@ void edit_kata(Node *root, Node tempId){
 	}
 	printf("Masukkan Kata translate (pisahkan beberapa terjemahan dengan koma): ");
     scanf("%s", &english);
+    change_to_lower(english);
     entry_translate_to_linked_list(&(tempId->translate), strtok(english, ","));
     char *token = strtok(NULL, ",");
     while (token != NULL) {
@@ -410,6 +368,8 @@ void Delete(Node *root, Node target){
 				strcat(strEn,",");//di concat juga dengan koma ',' agar format sama dengan cara insert
 				tempEng = tempEng->next;
 			}
+			change_to_lower(strId);
+			change_to_lower(strEn);
 			fprintf(fp, "%s %s\n", strId, strEn); //write ke file
 		}
 		
@@ -429,10 +389,7 @@ void Delete(Node *root, Node target){
 
 void translate_search(Node root, infotype idn){
 	Node find;
-	int i; 
-	for (i= 0; i<=strlen(idn); i++) {
-            idn[i] = tolower(idn[i]);
-    }
+	change_to_lower(idn);
 	if(root == NULL){
 		printf("Kamus Kosong. Tidak ada data yang tersedia!\n");
 	}else{
@@ -445,6 +402,13 @@ void translate_search(Node root, infotype idn){
 		}
 	}
 	
+}
+
+void change_to_lower(infotype word){
+	int i;
+	for (i= 0; i<=strlen(word); i++) {
+	    word[i] = tolower(word[i]);
+    }
 }
 
 

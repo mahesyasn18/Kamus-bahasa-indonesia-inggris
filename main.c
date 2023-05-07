@@ -93,6 +93,7 @@ int main(int argc, char *argv[]) {
         	printf("Masukkan kata dalam Bahasa Indonesia yang akan dihapus: ");
         	scanf("%s", &indonesia);
         	printf("\n==============================\n");
+        	change_to_lower(indonesia);
         	temp = Search(root, indonesia);
         	if(temp == NULL){
 				printf("Kata ini tidak terdaftar dalam kamus.\n");
@@ -117,6 +118,7 @@ int main(int argc, char *argv[]) {
         	printf("Masukkan kata dalam Bahasa Indonesia: ");
         	scanf("%s", &indonesia);
         	printf("\n==============================\n");
+        	change_to_lower(indonesia);
         	temp = Search(root, indonesia);
         	if(temp == NULL){
 				printf("Kata ini tidak terdaftar dalam kamus.\n");

@@ -60,6 +60,9 @@ void edit_kata(Node *root, Node tempId);
 
 void translate_search(Node root, infotype idn);
 
+int calculate_max_height(Node root) ;
+void print_tree(Node root, int level, int max_height);
+
 
 
 

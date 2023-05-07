@@ -65,6 +65,10 @@ int main(int argc, char *argv[]) {
         	system("cls");
         	printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
             printf("Data Kamus\n");
+            int max_height = calculate_max_height(root);
+    		print_tree(root, 1, max_height);
+            printf("##############\n");
+            printf("Travesal Inorder\n");
             travesal_inorder(root);
 			printf("\n");
 			system("pause");
@@ -131,10 +135,16 @@ int main(int argc, char *argv[]) {
 			system("cls");
 			printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
 			printf("\nData Kamus Sebelum Balancing\n");
-			travesal_inorder(root);
+			print_tree(root, 1, max_height);
+            printf("################\n");
+            printf("Travesal Inorder\n");
+            travesal_inorder(root);
 			printf("\nData Kamus Sesudah Balancing\n");
 			rootBalance = load_data_from_file(rootBalance, true);
-			travesal_inorder(rootBalance);
+			print_tree(rootBalance, 1, max_height);
+            printf("################\n");
+            printf("Travesal Inorder\n");
+            travesal_inorder(rootBalance);
 			system("pause");
 			system("cls");
 		case 0:

@@ -15,6 +15,14 @@ program description: Program tugas besar mata kuliah Struktur Data dan Algoritma
 void entry_data_to_file(infotype idn, infotype eng) {
     FILE *fp;
     fp = fopen("file.dat", "a+");
+    int i;
+    for (i= 0; i<=strlen(idn); i++) {
+        idn[i] = tolower(idn[i]);
+    }
+    
+    for (i= 0; i<=strlen(eng); i++) {
+            eng[i] = tolower(eng[i]);
+    }
 	
     if (fp == NULL) {
         printf("Error opening file\n");
@@ -197,9 +205,24 @@ Node rotate_management(int balance, infotype idn, Node root){
 
 void show_translate(address head) {
     address temp = head;
+    int count = 0;
 
+    // Menghitung jumlah node pada linked list
     while (temp != NULL) {
-        printf("%s ", temp->eng);
+        count++;
+        temp = temp->next;
+    }
+
+    temp = head;
+    while (temp != NULL) {
+        printf("%s", temp->eng);
+
+        // Jika terjemahan saat ini bukan merupakan terjemahan terakhir, tampilkan tanda koma
+        if (count > 1) {
+            printf(", ");
+            count--;
+        }
+
         temp = temp->next;
     }
 
@@ -207,14 +230,98 @@ void show_translate(address head) {
 }
 
 
+
 void travesal_inorder(Node root) {
+	
     if (root != NULL) {
+    
         travesal_inorder(root->left);
-        printf("%s:  %d ", root->idn, root->height);
+        printf("%s %d ", root->idn, root->height);
         show_translate(root->translate);
         travesal_inorder(root->right);
     }
 }
+
+
+
+//void print_tree(Node root, int level, int max_height) {
+//	int i;
+//if (root == NULL) {
+//return;
+//}
+//// Print the right subtree
+//print_tree(root->right, level + 1, max_height);
+//
+//// Print the current node
+//// Indent the node based on the level
+//for ( i= 0; i < level - 1; i++) {
+//    printf("|       ");
+//}
+//
+//
+//if (level > 0) {
+//    printf("|-------");
+//}
+//
+//
+//if (root->height == max_height) {
+//    printf("+");
+//    printf("--- %s  \n", root->idn);
+////    printf("Hasil Translatenya: ");
+////    show_translate(root->translate);
+//} else {
+//    printf("-");
+//    printf("--- %s \n", root->idn);
+////    printf("Hasil Translatenya: ");
+////    show_translate(root->translate);
+//}
+//
+//// Print the left subtree
+//print_tree(root->left, level + 1, max_height);
+//}
+
+
+void print_tree(Node root, int level, int max_height) {
+    int i;
+    if (root == NULL) {
+        return;
+    }
+
+    print_tree(root -> right, level + 1, max_height);
+
+    for (i = 0; i < level - 1; i++) {
+        printf("|       ");
+    }
+
+    if (level > 0) {
+        printf("|-------");
+    }
+
+    if (root -> height == max_height) {
+        printf("+");
+        printf("--- %s  \n", root -> idn);
+    } else {
+        printf("-");
+        printf("--- %s \n", root -> idn);
+    }
+
+    // Print the left subtree
+    print_tree(root -> left, level + 1, max_height);
+}
+
+
+
+int calculate_max_height(Node root) {
+    if (root == NULL) {
+        return 0;
+    } else {
+        int left_height = calculate_max_height(root->left);
+        int right_height = calculate_max_height(root->right);
+        return 1 + (left_height > right_height ? left_height : right_height);
+    }
+}
+
+
 
 
 void edit_kata(Node *root, Node tempId){
@@ -322,6 +429,10 @@ void Delete(Node *root, Node target){
 
 void translate_search(Node root, infotype idn){
 	Node find;
+	int i; 
+	for (i= 0; i<=strlen(idn); i++) {
+            idn[i] = tolower(idn[i]);
+    }
 	if(root == NULL){
 		printf("Kamus Kosong. Tidak ada data yang tersedia!\n");
 	}else{

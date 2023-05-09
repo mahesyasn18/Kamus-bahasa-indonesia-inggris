@@ -277,13 +277,25 @@ int calculate_max_height(Node root) {
     }
 }
 
+void edit_kata_indonesia(Node *root, Node tempId){
+	infotype indonesia;
+	system("cls");
+	printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
+	printf("Masukkan kata yang baru untuk '%s' : ", tempId->idn);
+	scanf("%s", &indonesia);
+	change_to_lower(indonesia);
+	strcpy(tempId->idn, indonesia);
+	Delete(&*root, NULL);
+	printf("Berhasil Merubah Data Kamus!\n");
+}
 
 
-
-void edit_kata(Node *root, Node tempId){
+void edit_kata_inggris(Node *root, Node tempId){
 	address tempEn, temp;
 	infotype english;
 	int flag = -1;
+	system("cls");
+	printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
 	printf("\n%s ", tempId->idn);
 	show_translate(tempId->translate);
 	printf("Masukkan kata terjemahan yang akan di delete: ");

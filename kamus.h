@@ -56,7 +56,8 @@ Node rotate_management(int balance, infotype idn, Node root);
 
 Node Search(Node root, infotype idn);
 void Delete(Node *root, Node target);
-void edit_kata(Node *root, Node tempId);
+void edit_kata_inggris(Node *root, Node tempId);
+void edit_kata_indonesia(Node *root, Node tempId);
 
 void translate_search(Node root, infotype idn);
 

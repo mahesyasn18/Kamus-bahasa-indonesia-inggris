@@ -16,7 +16,7 @@ program description: Program tugas besar mata kuliah Struktur Data dan Algoritma
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
 int main(int argc, char *argv[]) {
-	int menu = 0;
+	int menu = 0, pilih = 0;
 	
     infotype indonesia, english;
     Node root = NULL, temp, rootBalance = NULL;
@@ -99,17 +99,24 @@ int main(int argc, char *argv[]) {
 				printf("Kata ini tidak terdaftar dalam kamus.\n");
 				printf("Silakan masukkan kata yang lain.\n");
 				system("pause");
+				system("cls");
 				break;
 			}else{
 				//kalo katanya ada, jalanin modul Delete dengan temp sebagai target kata yang di delete
+				printf("Data Kamus '%s' Berhasil Dihapus!\n", temp->idn);
 				Delete(&root, temp);
 				rootBalance = NULL;
-				
 			}
 			system("pause");
 			system("cls");
             break;
 		case 5:
+			system("cls");
+			printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
+            printf("1. Edit kata Indonesia\n");
+            printf("2. Edit kata Inggris\n");
+            printf("Masukkan Pilihan Menu: ");
+			scanf("%d", &pilih);
 			system("cls");
 			printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
 			printf("\nData Kamus\n");
@@ -124,11 +131,13 @@ int main(int argc, char *argv[]) {
 				printf("Kata ini tidak terdaftar dalam kamus.\n");
 				printf("Silakan masukkan kata yang lain.\n");
 				system("pause");
-				break;
-			}else{
 				system("cls");
-				edit_kata(&root, temp);
-				
+				break;
+			}
+			if (pilih == 1){
+				edit_kata_indonesia(&root, temp);
+			}else{
+				edit_kata_inggris(&root, temp);
 			}
 			system("pause");
 			system("cls");

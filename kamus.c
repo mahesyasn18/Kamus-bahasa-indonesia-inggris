@@ -95,7 +95,6 @@ Node Search(Node root, infotype idn){
 	}else{
 		return root;
 	}
-
 }
 
 
@@ -112,7 +111,7 @@ void entry_translate_to_linked_list(address *head, infotype eng) {
     	while (temp->next != NULL) {
         	temp = temp->next;
     	}
-		 temp->next = (address) malloc(sizeof(ElmtList));
+		temp->next = (address) malloc(sizeof(ElmtList));
 	    strcpy(temp->next->eng, eng);
 	    temp->next->next = NULL;  
 	}
@@ -261,21 +260,9 @@ void print_tree(Node root, int level, int max_height) {
         printf("--- %s \n", root -> idn);
     }
 
-    // Print the left subtree
     print_tree(root -> left, level + 1, max_height);
 }
 
-
-
-int calculate_max_height(Node root) {
-    if (root == NULL) {
-        return 0;
-    } else {
-        int left_height = calculate_max_height(root->left);
-        int right_height = calculate_max_height(root->right);
-        return 1 + (left_height > right_height ? left_height : right_height);
-    }
-}
 
 void edit_kata_indonesia(Node *root, Node tempId){
 	infotype indonesia;

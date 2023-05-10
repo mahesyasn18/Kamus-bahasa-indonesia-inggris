@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
         	system("cls");
         	printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
             printf("Data Kamus\n");
-            int max_height = calculate_max_height(root);
+            int max_height = max(get_height(root->left), get_height(root->right))+1;
     		print_tree(root, 1, max_height);
             printf("##############\n");
             printf("Travesal Inorder\n");

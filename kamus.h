@@ -34,34 +34,35 @@ typedef struct BTNode{
 } BTnode;
 
 
-//crud data management
+
 void entry_data_to_file(infotype idn, infotype eng);
-Node entry_data_to_tree(Node root, infotype idn, infotype eng, bool isAvl);
-void entry_translate_to_linked_list(address *head, infotype eng);
 Node load_data_from_file(Node root, bool isAvl);
-void travesal_inorder(Node root);
-void show_translate(address head);
 
 
-
-
-//avl management
-int get_height(Node node);
 Node create_node(infotype idn, infotype eng);
+Node entry_data_to_tree(Node root, infotype idn, infotype eng, bool isAvl);
+Node Search(Node root, infotype idn);
+void entry_translate_to_linked_list(address *head, infotype eng);
+
+
 int max(int leftNode, int rightNode);
+int get_height(Node node);
 int get_balance(Node node);
 Node left_rotate(Node x);
 Node right_rotate(Node y);
 Node rotate_management(int balance, infotype idn, Node root);
 
-Node Search(Node root, infotype idn);
+
+void show_translate(address head);
+void travesal_inorder(Node root);
+
+
 void Delete(Node *root, Node target);
 void edit_kata_inggris(Node *root, Node tempId);
 void edit_kata_indonesia(Node *root, Node tempId);
 
 void translate_search(Node root, infotype idn);
 
-int calculate_max_height(Node root) ;
 void print_tree(Node root, int level, int max_height);
 void change_to_lower(infotype word);
 

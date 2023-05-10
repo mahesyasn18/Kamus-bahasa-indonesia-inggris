@@ -140,36 +140,36 @@ int get_balance(Node node) {
 }
 
 
-Node right_rotate(Node y) {
+Node right_rotate(Node node) {
 //	printf("right rotate\n");
-    Node temp1 = y->left;
+    Node temp1 = node->left;
     Node temp2 = temp1->right;
-    temp1->right = y;
+    temp1->right = node;
     
     if (temp2 != NULL) {
-        y->left = temp2;
+        node->left = temp2;
     } else {
-        y->left = NULL;
+        node->left = NULL;
     }
  
-    y->height = max(get_height(y->left), get_height(y->right)) + 1;
+    node->height = max(get_height(node->left), get_height(node->right)) + 1;
     temp1->height = max(get_height(temp1->left), get_height(temp1->right)) + 1;
     return temp1;
 }
 
-Node left_rotate(Node x) {
+Node left_rotate(Node node) {
 //	printf("left rotate\n");
-    Node temp1 = x->right;
+    Node temp1 = node->right;
     Node temp2 = temp1->left;
-    temp1->left = x;
+    temp1->left = node;
     
     if (temp2 != NULL) {
-        x->right = temp2;
+        node->right = temp2;
     } else {
-        x->right = NULL;
+        node->right = NULL;
     }
  
-    x->height = max(get_height(x->left), get_height(x->right)) + 1;
+    node->height = max(get_height(node->left), get_height(node->right)) + 1;
     temp1->height = max(get_height(temp1->left), get_height(temp1->right)) + 1;
  
     return temp1;

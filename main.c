@@ -159,7 +159,6 @@ int main(int argc, char *argv[]) {
 			system("pause");
 			system("cls");
 		case 0:
-			printf("\nprogram selesai!");
 			break;
         default:
             printf("Invalid input\n");
@@ -167,7 +166,7 @@ int main(int argc, char *argv[]) {
     }
 
 	} while (menu != 0);
-
+	printf("\nprogram selesai!");
 	return 0;
 }
 

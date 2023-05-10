@@ -50,8 +50,8 @@ int get_height(Node node);
 Node create_node(infotype idn, infotype eng);
 int max(int leftNode, int rightNode);
 int get_balance(Node node);
-Node left_rotate(Node x);
-Node right_rotate(Node y);
+Node left_rotate(Node node);
+Node right_rotate(Node node);
 Node rotate_management(int balance, infotype idn, Node root);
 
 Node Search(Node root, infotype idn);

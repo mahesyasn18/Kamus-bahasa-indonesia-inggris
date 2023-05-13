@@ -12,7 +12,7 @@ program description: Program tugas besar mata kuliah Struktur Data dan Algoritma
 
 
 //crud data management
-void entry_data_to_file(infotype idn, infotype eng) {
+void entry_data_to_file(infotype idn, infotype eng){
     FILE *fp;
     fp = fopen("file.dat", "a+");
     int i;
@@ -74,7 +74,7 @@ Node entry_data_to_tree(Node root, infotype idn, infotype eng, bool isAvl){
         return root;
     }
     
-    root->height = 1 + max(get_height(root->left), get_height(root->right));
+    root->height = 1 + max_height(get_height(root->left), get_height(root->right));
     int balance = get_balance(root);
     if(isAvl){
     	return rotate_management(balance, idn, root);
@@ -123,8 +123,12 @@ void entry_translate_to_linked_list(address *head, infotype eng) {
 
 
 //Avl Management
-int max(int leftNode, int rightNode) {
-    return (leftNode > rightNode) ? leftNode : rightNode;
+int max_height(int leftNode, int rightNode) {
+    if (leftNode > rightNode){
+    	return leftNode;
+	}else{
+		return rightNode;
+	}
 }
 
 int get_height(Node node) {
@@ -152,8 +156,8 @@ Node right_rotate(Node node) {
         node->left = NULL;
     }
  
-    node->height = max(get_height(node->left), get_height(node->right)) + 1;
-    temp1->height = max(get_height(temp1->left), get_height(temp1->right)) + 1;
+    node->height = max_height(get_height(node->left), get_height(node->right)) + 1;
+    temp1->height = max_height(get_height(temp1->left), get_height(temp1->right)) + 1;
     return temp1;
 }
 
@@ -169,8 +173,8 @@ Node left_rotate(Node node) {
         node->right = NULL;
     }
  
-    node->height = max(get_height(node->left), get_height(node->right)) + 1;
-    temp1->height = max(get_height(temp1->left), get_height(temp1->right)) + 1;
+    node->height = max_height(get_height(node->left), get_height(node->right)) + 1;
+    temp1->height = max_height(get_height(temp1->left), get_height(temp1->right)) + 1;
  
     return temp1;
 }
@@ -223,17 +227,56 @@ void show_translate(address head) {
     printf("\n");
 }
 
+void gotoxy(int x, int y){
+	COORD coord;
+	coord.X = x;
+	coord.Y = y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
 
+void getCurrentCursorPosition(int *row, int *col) {
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    if (GetConsoleScreenBufferInfo(console, &csbi)) {
+        *row = csbi.dwCursorPosition.Y + 1;
+        *col = csbi.dwCursorPosition.X + 1;
+    } else {
+        printf("Error retrieving cursor position.\n");
+    }
+}
 
 void travesal_inorder(Node root) {
-	
-    if (root != NULL) {
-    
-        travesal_inorder(root->left);
-        printf("%s %d ", root->idn, root->height);
-        show_translate(root->translate);
-        travesal_inorder(root->right);
-    }
+	int y,x;
+	if (root==NULL){
+		return;
+	}
+	printf("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+	printf("+\t\tINDONESIA\t\t+ height +\t\t\tINGGRIS\t\t\t\t+\n");
+	printf("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+	printf("+\t\t\t\t\t+\t +\t\t\t\t\t\t\t+");
+	Node stack[10];
+	Node temp = root;
+	getCurrentCursorPosition(&y,&x);
+	int top=-1;
+	while (temp != NULL || top !=-1){
+		while(temp!=NULL){
+			stack[++top] = temp;
+			temp = temp->left;
+		}
+		temp = stack[top--];
+		gotoxy(0,y);printf("+");
+		gotoxy(3,y);printf("%s", temp->idn);
+		gotoxy(40,y);printf("+");
+		gotoxy(44, y);printf("%d", temp->height);
+		gotoxy(49, y);printf("+");
+		gotoxy(51,y);show_translate(temp->translate);
+		gotoxy(104,y);printf("+");
+		temp = temp->right;
+		y++;
+	}
+	printf("\n+\t\t\t\t\t+\t +\t\t\t\t\t\t\t+\n");
+	printf("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n");
 }
 
 void print_tree(Node root, int level, int max_height) {
@@ -276,35 +319,30 @@ void edit_kata_indonesia(Node *root, Node tempId){
 	printf("Berhasil Merubah Data Kamus!\n");
 }
 
-
-void edit_kata_inggris(Node *root, Node tempId){
+int delete_kata_inggris(address *head, infotype en){
+	address tr = *head;
 	address tempEn, temp;
-	infotype english;
-	int flag = -1;
-	system("cls");
-	printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
-	printf("\n%s ", tempId->idn);
-	show_translate(tempId->translate);
-	printf("Masukkan kata terjemahan yang akan di delete: ");
-	scanf("%s", &english);
-	change_to_lower(english);
-	if (strcmp(tempId->translate->eng, english) == 0){
+	int flag = 1; //Jika flag = 1 kata tidak ditemukan; jika flag = 0 kata ditemukan
+	if (strcmp(tr->eng, en) == 0){
 		//jika translate nya ada di head, maka pindahkan head nya ke next
-		temp = tempId->translate;
-		if (tempId->translate->next != NULL){
-			tempId->translate = tempId->translate->next;
+		temp = tr;
+		if (tr->next != NULL){
+			tr = tr->next;
 		}else{
-			tempId->translate = NULL;
+			tr = NULL;
 		}
+		flag = 0; //kata ditemukan dan telah di delete
 		free(temp);
 	//jika next translate tidak null, loop untuk mencari kata yang mau di delete
-	}else if (tempId->translate->next != NULL){
+	}else if (tr->next != NULL){
 		//loop dengan harus memegang item sebelum target untuk disambungkan ke next dari target delete
-		tempEn = tempId->translate;
+		//tempEn adalah pointer pembantu untuk menyambungkan list, tempEn memegang list sebelum target
+		//temp adalah target
+		tempEn = tr;
 		while(tempEn != NULL){
 			if (tempEn->next != NULL){
-				if(strcmp(tempEn->next->eng, english) == 0){
-					temp = tempEn->next;
+				if(strcmp(tempEn->next->eng, en) == 0){
+					temp = tempEn->next; //target di pegang oleh temp
 					if (temp->next != NULL){
 						tempEn->next = temp->next;
 						temp->next = NULL;
@@ -313,17 +351,27 @@ void edit_kata_inggris(Node *root, Node tempId){
 						tempEn->next = NULL;
 						free(temp);
 					}
-					flag = 0;
+					flag = 0; //kata ditemukan dan telah di delete
 					break;
 				}
 			}
 			tempEn = tempEn->next;
 		}
-		if (flag != 0){
-			printf("\nKata yang dicari tidak ditemukan!\n");
-			return;
-		}
-	}else{
+	}
+	*head = tr;
+	return flag;
+}
+
+void edit_kata_inggris(Node *root, Node tempId){
+	infotype english;
+	system("cls");
+	printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
+	printf("\n%s ", tempId->idn);
+	show_translate(tempId->translate);
+	printf("Masukkan kata terjemahan yang akan di delete: ");
+	scanf("%s", &english);
+	change_to_lower(english);
+	if (delete_kata_inggris(&(tempId->translate), english) == 1) {
 		printf("\nKata yang dicari tidak ditemukan!\n");
 		return;
 	}

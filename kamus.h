@@ -13,6 +13,7 @@ program description: Program tugas besar mata kuliah Struktur Data dan Algoritma
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <windows.h>
 
 #define True 1
 #define False 0
@@ -45,7 +46,7 @@ Node Search(Node root, infotype idn);
 void entry_translate_to_linked_list(address *head, infotype eng);
 
 
-int max(int leftNode, int rightNode);
+int max_height(int leftNode, int rightNode);
 int get_height(Node node);
 int get_balance(Node node);
 Node left_rotate(Node node);
@@ -60,6 +61,9 @@ void travesal_inorder(Node root);
 void Delete(Node *root, Node target);
 void edit_kata_inggris(Node *root, Node tempId);
 void edit_kata_indonesia(Node *root, Node tempId);
+int delete_kata_inggris(address *head, infotype en);
+void gotoxy(int x, int y);
+void getCurrentCursorPosition(int *row, int *col);
 
 void translate_search(Node root, infotype idn);
 

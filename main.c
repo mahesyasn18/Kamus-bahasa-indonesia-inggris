@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
     	root = load_data_from_file(root, false);
     	if(rootBalance!=NULL){
         	root = rootBalance;
+        	rootBalance = NULL;
 		}
         printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
         printf("Lakukan Balancing Terlebih dahulu untuk pertama kali load data dan untuk setiap terdapat perubahan data\n");
@@ -58,6 +59,7 @@ int main(int argc, char *argv[]) {
             entry_data_to_file(indonesia, english);
             printf("\n==============================\n");
             printf("Berhasil Menambahkan Data ke Kamus\n");
+            //rootBalance = NULL;
             sleep(1);
             system("cls");
             break;
@@ -105,7 +107,7 @@ int main(int argc, char *argv[]) {
 				//kalo katanya ada, jalanin modul Delete dengan temp sebagai target kata yang di delete
 				printf("Data Kamus '%s' Berhasil Dihapus!\n", temp->idn);
 				Delete(&root, temp);
-				rootBalance = NULL;
+				//rootBalance = NULL;
 			}
 			system("pause");
 			system("cls");

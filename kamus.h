@@ -60,6 +60,7 @@ void travesal_inorder(Node root);
 void Delete(Node *root, Node target);
 void edit_kata_inggris(Node *root, Node tempId);
 void edit_kata_indonesia(Node *root, Node tempId);
+int delete_kata_inggris(address *head, infotype en);
 
 void translate_search(Node root, infotype idn);
 

@@ -12,7 +12,7 @@ program description: Program tugas besar mata kuliah Struktur Data dan Algoritma
 
 
 //crud data management
-void entry_data_to_file(infotype idn, infotype eng) {
+void entry_data_to_file(infotype idn, infotype eng){
     FILE *fp;
     fp = fopen("file.dat", "a+");
     int i;
@@ -276,35 +276,30 @@ void edit_kata_indonesia(Node *root, Node tempId){
 	printf("Berhasil Merubah Data Kamus!\n");
 }
 
-
-void edit_kata_inggris(Node *root, Node tempId){
+int delete_kata_inggris(address *head, infotype en){
+	address tr = *head;
 	address tempEn, temp;
-	infotype english;
-	int flag = -1;
-	system("cls");
-	printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
-	printf("\n%s ", tempId->idn);
-	show_translate(tempId->translate);
-	printf("Masukkan kata terjemahan yang akan di delete: ");
-	scanf("%s", &english);
-	change_to_lower(english);
-	if (strcmp(tempId->translate->eng, english) == 0){
+	int flag = 1; //Jika flag = 1 kata tidak ditemukan; jika flag = 0 kata ditemukan
+	if (strcmp(tr->eng, en) == 0){
 		//jika translate nya ada di head, maka pindahkan head nya ke next
-		temp = tempId->translate;
-		if (tempId->translate->next != NULL){
-			tempId->translate = tempId->translate->next;
+		temp = tr;
+		if (tr->next != NULL){
+			tr = tr->next;
 		}else{
-			tempId->translate = NULL;
+			tr = NULL;
 		}
+		flag = 0; //kata ditemukan dan telah di delete
 		free(temp);
 	//jika next translate tidak null, loop untuk mencari kata yang mau di delete
-	}else if (tempId->translate->next != NULL){
+	}else if (tr->next != NULL){
 		//loop dengan harus memegang item sebelum target untuk disambungkan ke next dari target delete
-		tempEn = tempId->translate;
+		//tempEn adalah pointer pembantu untuk menyambungkan list, tempEn memegang list sebelum target
+		//temp adalah target
+		tempEn = tr;
 		while(tempEn != NULL){
 			if (tempEn->next != NULL){
-				if(strcmp(tempEn->next->eng, english) == 0){
-					temp = tempEn->next;
+				if(strcmp(tempEn->next->eng, en) == 0){
+					temp = tempEn->next; //target di pegang oleh temp
 					if (temp->next != NULL){
 						tempEn->next = temp->next;
 						temp->next = NULL;
@@ -313,17 +308,27 @@ void edit_kata_inggris(Node *root, Node tempId){
 						tempEn->next = NULL;
 						free(temp);
 					}
-					flag = 0;
+					flag = 0; //kata ditemukan dan telah di delete
 					break;
 				}
 			}
 			tempEn = tempEn->next;
 		}
-		if (flag != 0){
-			printf("\nKata yang dicari tidak ditemukan!\n");
-			return;
-		}
-	}else{
+	}
+	*head = tr;
+	return flag;
+}
+
+void edit_kata_inggris(Node *root, Node tempId){
+	infotype english;
+	system("cls");
+	printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
+	printf("\n%s ", tempId->idn);
+	show_translate(tempId->translate);
+	printf("Masukkan kata terjemahan yang akan di delete: ");
+	scanf("%s", &english);
+	change_to_lower(english);
+	if (delete_kata_inggris(&(tempId->translate), english) == 1) {
 		printf("\nKata yang dicari tidak ditemukan!\n");
 		return;
 	}

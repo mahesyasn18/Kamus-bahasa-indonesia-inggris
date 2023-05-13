@@ -15,16 +15,18 @@ program description: Program tugas besar mata kuliah Struktur Data dan Algoritma
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]){
 	int menu = 0, pilih = 0;
 	
     infotype indonesia, english;
     Node root = NULL, temp, rootBalance = NULL;
     address tempEn;
     do {
-    	root = load_data_from_file(root, false);
     	if(rootBalance!=NULL){
         	root = rootBalance;
+        	rootBalance = NULL;
+		}else{
+			root = load_data_from_file(root, false);
 		}
         printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
         printf("Lakukan Balancing Terlebih dahulu untuk pertama kali load data dan untuk setiap terdapat perubahan data\n");
@@ -87,6 +89,12 @@ int main(int argc, char *argv[]) {
 			//cari dulu kata yang pengen di delete, make modul search
 			system("cls");
 			printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
+            printf("1. Delete kata Indonesia\n");
+            printf("2. Delete kata Inggris\n");
+            printf("Masukkan Pilihan Menu: ");
+			scanf("%d", &pilih);
+			system("cls");
+			printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
 			printf("\nData Kamus\n");
             travesal_inorder(root);
             printf("\n==============================\n");
@@ -101,11 +109,25 @@ int main(int argc, char *argv[]) {
 				system("pause");
 				system("cls");
 				break;
-			}else{
+			}
+			if (pilih == 1){
 				//kalo katanya ada, jalanin modul Delete dengan temp sebagai target kata yang di delete
 				printf("Data Kamus '%s' Berhasil Dihapus!\n", temp->idn);
 				Delete(&root, temp);
-				rootBalance = NULL;
+			}else{
+				system("cls");
+				printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
+				printf("\n%s ", temp->idn);
+				show_translate(temp->translate);
+				printf("Masukkan kata terjemahan yang akan di delete: ");
+				scanf("%s", &english);
+				change_to_lower(english);
+				if (delete_kata_inggris(&(temp->translate), english) == 1) {
+					printf("\nKata yang dicari tidak ditemukan!\n");
+				}else{
+					printf("\nKata terjemahan '%s' berhasil dihapus!\n", english);
+					Delete(&root, NULL);
+				}
 			}
 			system("pause");
 			system("cls");

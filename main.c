@@ -17,7 +17,7 @@ program description: Program tugas besar mata kuliah Struktur Data dan Algoritma
 
 int main(int argc, char *argv[]){
 	int menu = 0, pilih = 0;
-	
+	int x,y;
     infotype indonesia, english;
     Node root = NULL, temp, rootBalance = NULL;
     address tempEn;
@@ -67,12 +67,11 @@ int main(int argc, char *argv[]){
         	system("cls");
         	printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
             printf("Data Kamus\n");
-            int max_height = max(get_height(root->left), get_height(root->right))+1;
-    		print_tree(root, 1, max_height);
-            printf("##############\n");
-            printf("Travesal Inorder\n");
             travesal_inorder(root);
 			printf("\n");
+            int max = max_height(get_height(root->left), get_height(root->right))+1;
+    		print_tree(root, 1, max);
+            printf("##############\n");
 			system("pause");
 			system("cls");
             break;
@@ -168,16 +167,12 @@ int main(int argc, char *argv[]){
 			system("cls");
 			printf("==============================\n-- Kamus Indonesia - Inggris--\n==============================\n");
 			printf("\nData Kamus Sebelum Balancing\n");
-			print_tree(root, 1, max_height);
-            printf("################\n");
-            printf("Travesal Inorder\n");
-            travesal_inorder(root);
+			travesal_inorder(root);
+			print_tree(root, 1, max);
 			printf("\nData Kamus Sesudah Balancing\n");
 			rootBalance = load_data_from_file(rootBalance, true);
-			print_tree(rootBalance, 1, max_height);
-            printf("################\n");
-            printf("Travesal Inorder\n");
-            travesal_inorder(rootBalance);
+			travesal_inorder(rootBalance);
+			print_tree(rootBalance, 1, max);
 			system("pause");
 			system("cls");
 		case 0:
